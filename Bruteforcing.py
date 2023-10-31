@@ -1,7 +1,7 @@
 import requests
 
 def brute_force_login(username):
-    password_file = open("passwords.txt", "r")
+    password_file = open("passlist.txt", "r")
     passwords = password_file.readlines()
     password_file.close()
 
