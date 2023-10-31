@@ -15,21 +15,25 @@ def run_tool(tool_name):
     except subprocess.CalledProcessError as e:
         print(f"Error running {tool_name}: {e}")
 
-# List of tools to install and run
-tools = [
-    "setoolkit",
-    "hydra",
-    "aircrack-ng",
-    "sqlmap",
-    "john",
-    "hashcat",
-    "wireshark",
-    "nmap",
-    "owasp-zap",
-    "msfconsole"
-]
+def install_and_run_tools(tools):
+    for tool in tools:
+        install_tool(tool)
+        run_tool(tool)
 
-# Install and run each tool
-for tool in tools:
-    install_tool(tool)
-    run_tool(tool)
+if __name__ == "__main__":
+    # List of tools to install and run
+    tools = [
+        "setoolkit",
+        "hydra",
+        "aircrack-ng",
+        "sqlmap",
+        "john",
+        "hashcat",
+        "wireshark",
+        "nmap",
+        "owasp-zap",
+        "msfconsole"
+    ]
+
+    # Install and run each tool
+    install_and_run_tools(tools)
