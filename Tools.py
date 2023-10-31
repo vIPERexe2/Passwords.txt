@@ -1,25 +1,35 @@
 import subprocess
 
-def install_tool(tool):
+def install_tool(tool_name):
     try:
-        subprocess.run(['pkg', 'install', tool], check=True)
-        print(f"{tool} installed successfully!")
-    except subprocess.CalledProcessError:
-        print(f"Error installing {tool}. Please check your internet connection and try again.")
+        subprocess.check_output(['apt', 'install', tool_name, '-y'])
+        print(f"{tool_name} installed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing {tool_name}: {e}")
 
-def install_all_tools():
-    tools = ['tool1', 'tool2', 'tool3']  # Replace with the actual names of the tools you want to install
-    
-    for tool in tools:
-        install_tool(tool)
+def run_tool(tool_name):
+    try:
+        subprocess.check_output([tool_name])
+    except FileNotFoundError:
+        print(f"{tool_name} not found. Please make sure it is installed.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running {tool_name}: {e}")
 
-def main():
-    choice = input("Enter 'all' to install all tools or enter the name of a specific tool: ")
-    
-    if choice.lower() == 'all':
-        install_all_tools()
-    else:
-        install_tool(choice)
+# List of tools to install and run
+tools = [
+    "setoolkit",
+    "hydra",
+    "aircrack-ng",
+    "sqlmap",
+    "john",
+    "hashcat",
+    "wireshark",
+    "nmap",
+    "owasp-zap",
+    "msfconsole"
+]
 
-if __name__ == "__main__":
-    main()
+# Install and run each tool
+for tool in tools:
+    install_tool(tool)
+    run_tool(tool)
