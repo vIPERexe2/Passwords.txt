@@ -4,6 +4,11 @@
 check_password() {
     # Add your code here to check if the password is correct
     # Return 0 if the password is correct, 1 otherwise
+    if [ "$1" == "correctpassword" ]; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 # Prompt the user to enter the Gmail account to target
@@ -21,4 +26,3 @@ while IFS= read -r password; do
         break
     fi
 done < "$password_list"
-
