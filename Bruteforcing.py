@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 # Function to check if the password is correct
 check_password() {
